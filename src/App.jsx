@@ -72,27 +72,62 @@ const returns =
 
       {tab === "tracker" && (
         <>
-          {tracker.length === 0 && <p style={{opacity:.6}}>No picks added</p>}
-{tracker.length >= 2 && (
+          {tracker.length >= 2 && (
   <div style={{
-    marginTop: 16,
+    marginBottom: 16,
     padding: 16,
     borderRadius: 12,
     background: "rgba(0,255,0,0.08)",
-    border: "1px solid rgba(0,255,0,0.3)"
+    border: "1px solid rgba(0,255,0,0.25)"
   }}>
     <strong>Acca Summary</strong>
+
     <div style={{ fontSize: 14, marginTop: 6 }}>
       Picks: {tracker.length}
     </div>
+
     <div style={{ fontSize: 14 }}>
       Probability: {(accaProbability * 100).toFixed(2)}%
     </div>
+
     <div style={{ fontSize: 14 }}>
       Decimal Odds: {accaOdds}
     </div>
+
+    <div style={{ marginTop: 8 }}>
+      <input
+        type="number"
+        placeholder="Stake"
+        value={stake}
+        onChange={e => setStake(e.target.value)}
+        style={{
+          width: "100%",
+          padding: 8,
+          borderRadius: 8
+        }}
+      />
+    </div>
+
+    <div style={{ fontSize: 14, marginTop: 6 }}>
+      Returns: {returns}
+    </div>
+
+    <button
+      onClick={() => exportAccaCSV(tracker)}
+      style={{
+        marginTop: 10,
+        width: "100%",
+        padding: 10,
+        borderRadius: 10,
+        background: "green",
+        color: "white"
+      }}
+    >
+      Export Acca CSV
+    </button>
   </div>
 )}
+
           
           {tracker.map(p => (
             <div key={p.id} style={card}>
