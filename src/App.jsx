@@ -91,7 +91,7 @@ const returns =
     </div>
 
     <div style={{ fontSize: 14 }}>
-      Decimal Odds: {accaOdds}
+      Decimal Odds: {accaOdds.toFixed(2)}
     </div>
 
     <div style={{ marginTop: 8 }}>
@@ -99,7 +99,7 @@ const returns =
         type="number"
         placeholder="Stake"
         value={stake}
-        onChange={e => setStake(e.target.value)}
+        onChange={e => setStake(Math.max(0, e.target.value))}
         style={{
           width: "100%",
           padding: 8,
@@ -109,7 +109,7 @@ const returns =
     </div>
 
     <div style={{ fontSize: 14, marginTop: 6 }}>
-      Returns: {returns}
+      Returns: £{returns}
     </div>
 
     <button
