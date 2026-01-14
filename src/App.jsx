@@ -9,7 +9,14 @@ export default function App() {
   const [tab, setTab] = useState("picks");
 
   const { tracker, addPick, removePick, clearTracker } = useTracker();
+const accaProbability =
+  tracker.length >= 2
+    ? tracker.reduce((acc, p) => acc * p.probability, 1)
+    : 0;
 
+const accaOdds =
+  accaProbability > 0 ? (1 / accaProbability).toFixed(2) : null;
+  
   const leagues = ["All", ...new Set(picks.map(p => p.league))];
 
   const filtered = picks.filter(p => {
