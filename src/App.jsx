@@ -7,6 +7,7 @@ export default function App() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [tab, setTab] = useState("picks");
+const [stake, setStake] = useState("");
 
   const { tracker, addPick, removePick, clearTracker } = useTracker();
 const accaProbability =
@@ -16,6 +17,10 @@ const accaProbability =
 
 const accaOdds =
   accaProbability > 0 ? (1 / accaProbability).toFixed(2) : null;
+const returns =
+  stake && accaProbability > 0
+    ? (stake * accaOdds).toFixed(2)
+    : "—";
   
   const leagues = ["All", ...new Set(picks.map(p => p.league))];
 
