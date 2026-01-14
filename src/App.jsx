@@ -1,46 +1,54 @@
+import { useState } from "react";
+import picks from "./data/picks";
+
 export default function App() {
+  const [league, setLeague] = useState("All");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+
+  const leagues = ["All", ...new Set(picks.map(p => p.league))];
+
+  const filtered = picks.filter(p => {
+    if (league !== "All" && p.league !== league) return false;
+    if (from && p.date < from) return false;
+    if (to && p.date > to) return false;
+    return true;
+  });
+
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "white", padding: 16 }}>
       <h1 style={{ fontSize: 22, fontWeight: "bold" }}>Picks Dashboards</h1>
-      <p style={{ opacity: 0.7 }}>Build tracker + accas (PWA ready)</p>
+      <p style={{ opacity: 0.7 }}>League & date filters</p>
 
-      <div style={{ marginTop: 16 }}>
-        <button style={btn}>Over 2.5</button>
-        <button style={btn}>BTTS Yes</button>
-        <button style={btn}>Over 1.5</button>
-        <button style={btn}>Tracker</button>
-        <button style={btn}>Acca Tracker</button>
-      </div>
-
-      <div style={{ marginTop: 24, padding: 16, background: "rgba(255,255,255,0.05)", borderRadius: 12 }}>
-        <input placeholder="Search team, league, pick" style={input} />
-      </div>
-
+      {/* Filters */}
       <div style={card}>
-        <strong>Sample Match 1</strong>
-        <span style={pill}>95%</span>
+        <select value={league} onChange={e => setLeague(e.target.value)} style={input}>
+          {leagues.map(l => (
+            <option key={l} value={l}>{l}</option>
+          ))}
+        </select>
+
+        <input type="date" value={from} onChange={e => setFrom(e.target.value)} style={input} />
+        <input type="date" value={to} onChange={e => setTo(e.target.value)} style={input} />
       </div>
 
-      <div style={card}>
-        <strong>Sample Match 2</strong>
-        <span style={pill}>92%</span>
-      </div>
+      {/* Picks */}
+      {filtered.map(p => (
+        <div key={p.id} style={card}>
+          <div>
+            <strong>{p.match}</strong>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>{p.league} · {p.date}</div>
+          </div>
+          <span style={pill}>{Math.round(p.probability * 100)}%</span>
+        </div>
+      ))}
     </div>
   );
 }
 
-const btn = {
-  marginRight: 6,
-  marginTop: 6,
-  padding: "6px 12px",
-  borderRadius: 999,
-  background: "rgba(255,255,255,0.1)",
-  color: "white",
-  border: "none"
-};
-
 const input = {
   width: "100%",
+  marginTop: 6,
   padding: 10,
   borderRadius: 8,
   border: "none",
@@ -52,14 +60,13 @@ const card = {
   marginTop: 16,
   padding: 16,
   borderRadius: 12,
-  background: "rgba(255,255,255,0.05)",
-  display: "flex",
-  justifyContent: "space-between"
+  background: "rgba(255,255,255,0.05)"
 };
 
 const pill = {
   background: "green",
   padding: "4px 10px",
   borderRadius: 999,
-  fontSize: 12
+  fontSize: 12,
+  height: "fit-content"
 };
